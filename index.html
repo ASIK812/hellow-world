@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Для тебя ❤️</title>
+    
+    <!-- Подключение шрифтов -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;700&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg-color: #fcf9f2;
+            --text-dark: #3a2c2c;
+            --text-light: #8a736a;
+            --accent: #b85d46;
+            --accent-light: #e8b4a2;
+            --card-bg: #ffffff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-dark);
+            font-family: 'Montserrat', sans-serif;
+            overflow-x: hidden;
+        }
+
+        /* --- Первый экран (Hero) --- */
+        .hero {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            background: linear-gradient(135deg, #f5e6e1 0%, #fcf9f2 100%);
+            text-align: center;
+            padding: 20px;
+        }
+
+        /* Фон с сердечками (эффект боке) */
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-image: radial-gradient(circle, rgba(255,255,255,0.8) 0%, rgba(255,255,255,0) 70%);
+            background-size: 150px 150px;
+            opacity: 0.6;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .hero-card {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            padding: 50px 40px;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(184, 93, 70, 0.1);
+            z-index: 1;
+            max-width: 600px;
+            width: 100%;
+        }
+
+        .badge {
+            display: inline-block;
+            background: #f0dfd9;
+            color: var(--accent);
+            padding: 8px 16px;
+            border-radius: 30px;
+            font-size: 0.75em;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 20px;
+            font-weight: 500;
+        }
+
+        .hero h1 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 3.5em;
+            font-weight: 400;
+            line-height: 1.1;
+            margin-bottom: 15px;
+        }
+
+        .hero h1 span {
+            color: var(--accent);
+            font-style: italic;
+            display: block;
+            font-size: 1.2em;
+            margin-top: 5px;
+        }
+
+        .hero p {
+            font-size: 0.95em;
+            color: var(--text-light);
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+
+        .btn-scroll {
+            background: var(--accent);
+            color: white;
+            border: none;
+            padding: 15px 35px;
+            border-radius: 30px;
+            font-size: 0.9em;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 20px rgba(184, 93, 70, 0.3);
+        }
+
+        .btn-scroll:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 25px rgba(184, 93, 70, 0.4);
+        }
+
+        /* --- Музыкальный плеер --- */
+        .music-player {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: white;
+            padding: 10px 20px;
+            border-radius: 30px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            z-index: 100;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .music-player:hover {
+            transform: scale(1.05);
+        }
+
+        .music-player .play-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--accent);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 12px;
+        }
+
+        .music-player .text {
+            font-size: 0.75em;
+            text-align: left;
+        }
+        .music-player .text strong {
+            display: block;
+            color: var(--text-dark);
+            font-size: 1.1em;
+        }
+        .music-player .text span {
+            color: var(--text-light);
+        }
+
+        /* --- Общие стили для секций --- */
+        .section {
+            padding: 100px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .section-subtitle {
+            color: var(--accent);
+            font-size: 0.75em;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+        }
+
+        .section-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2.8em;
+            font-weight: 400;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .section-desc {
+            font-size: 0.9em;
+            color: var(--text-light);
+            font-style: italic;
+            margin-bottom: 50px;
+        }
+
+        /* --- Письмо --- */
+        .letter-section {
+            background-color: #f7eee9;
+        }
+
+        .letter-card {
+            background: var(--card-bg);
+            padding: 60px;
+            border-radius: 15px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.05);
+            max-width: 700px;
+            position: relative;
+            background-image: linear-gradient(90deg, transparent 50px, #f0f0f0 50px, #f0f0f0 51px, transparent 51px);
+        }
+
+        /* Декоративный штамп */
+        .letter-stamp {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 80px;
+            height: 90px;
+            border: 1px dashed var(--accent-light);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: var(--accent);
+            font-size: 0.6em;
+            letter-spacing: 1px;
+            transform: rotate(5deg);
+        }
+        .letter-stamp span { font-size: 1.5em; margin: 5px 0; }
+
+        .letter-content h2 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2em;
+            font-weight: 400;
+            margin-bottom: 25px;
+            color: var(--text-dark);
+        }
+
+        .letter-content p {
+            font-family: 'Caveat', cursive;
+            font-size: 1.8em;
+            line-height: 1.4;
+            color: #4a3b3b;
+            margin-bottom: 20px;
+        }
+
+        .letter-signature {
+            text-align: right;
+            font-family: 'Caveat', cursive;
+            font-size: 2em;
+            color: var(--accent);
+            margin-top: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+
+        /* --- Причины --- */
+        .reasons-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            max-width: 1000px;
+            width: 100%;
+        }
+
+        .reason-card {
+            background: var(--card-bg);
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            cursor: pointer;
+            transition: transform 0.3s;
+            text-align: center;
+        }
+
+        .reason-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .reason-image {
+            width: 100%;
+            height: 250px;
+            background-color: #eee;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+
+        .reason-overlay {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(184, 93, 70, 0.8);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            text-align: center;
+            font-family: 'Caveat', cursive;
+            font-size: 1.8em;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .reason-card.active .reason-overlay {
+            opacity: 1;
+        }
+
+        .reason-text {
+            padding: 20px;
+            font-family: 'Caveat', cursive;
+            font-size: 1.5em;
+            color: var(--text-dark);
+        }
+
+        /* --- Галерея --- */
+        .gallery-section {
+            background-color: #f7eee9;
+            padding-bottom: 150px;
+        }
+
+        .gallery-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 30px;
+            max-width: 1000px;
+        }
+
+        .polaroid {
+            background: white;
+            padding: 15px 15px 50px 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transform: rotate(-3deg);
+            transition: all 0.4s ease;
+            width: 280px;
+        }
+
+        .polaroid:nth-child(even) {
+            transform: rotate(4deg);
+        }
+
+        .polaroid:hover {
+            transform: scale(1.05) rotate(0deg);
+            z-index: 10;
+        }
+
+        .polaroid img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            background-color: #ddd;
+        }
+
+        /* --- Анимации появления --- */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* --- Адаптивность --- */
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2.5em; }
+            .hero-card { padding: 30px 20px; }
+            .letter-card { padding: 30px 20px; background-image: none; }
+            .letter-content p { font-size: 1.5em; }
+            .section-title { font-size: 2em; }
+            .polaroid { width: 100%; max-width: 300px; transform: rotate(0deg); }
+            .polaroid:nth-child(even) { transform: rotate(0deg); }
+            .music-player { bottom: 10px; right: 10px; padding: 8px 15px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Аудио (замените 'music.mp3' на название вашего файла) -->
+    <audio id="bgMusic" loop>
+        <source src="music.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- Первый экран -->
+    <section class="hero">
+        <div class="hero-card fade-in">
+            <div class="badge">Особое послание для тебя</div>
+            <h1>Сайт, созданный <span>с любовью</span></h1>
+            <p>Каждый момент с тобой — это подарок. Я создал это место, чтобы напомнить тебе, насколько ты особенная для меня.</p>
+            <button class="btn-scroll" onclick="document.getElementById('letter').scrollIntoView({behavior: 'smooth'});">Открыть историю ↓</button>
+        </div>
+    </section>
+
+    <!-- Музыкальный плеер -->
+    <div class="music-player" onclick="toggleMusic()">
+        <div class="play-icon" id="playIcon">▶</div>
+        <div class="text">
+            <strong>Наша особенная песня</strong>
+            <span>Включи музыку ✨</span>
+        </div>
+    </div>
+
+    <!-- Секция с письмом -->
+    <section class="section letter-section fade-in" id="letter">
+        <div class="letter-card">
+            <div class="letter-content">
+                <h2>Мой котенок,</h2>
+                <p>Иногда слов бывает недостаточно, чтобы описать всё то, что я чувствую к тебе. Ты приносишь в мою жизнь столько тепла, радости и счастья.</p>
+                <p>Этот маленький сайт — лишь небольшое напоминание о том, как сильно я тебя люблю. Спасибо тебе за твою доброту, твой смех и за то, что ты делаешь каждый мой день лучше.</p>
+                <div class="letter-signature">
+                    Люблю тебя очень сильно <span>❤️</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Секция с причинами -->
+    <section class="section fade-in">
+        <div class="section-subtitle">Маленькие причины</div>
+        <h2 class="section-title">Почему я люблю тебя</h2>
+        <p class="section-desc">(Нажми на карточку, чтобы узнать)</p>
+
+        <div class="reasons-grid">
+            <!-- Карточка 1 -->
+            <div class="reason-card" onclick="this.classList.toggle('active')">
+                <div class="reason-image" style="background-image: url('photo1.jpg');">
+                    <div class="reason-overlay">За твой глубокий и чарующий взгляд. В твоих глазах я вижу целый мир, в котором хочется остаться навсегда</div>
+                </div>
+                <div class="reason-text">Твои бездонные глаза ✨</div>
+            </div>
+            
+            <!-- Карточка 2 -->
+            <div class="reason-card" onclick="this.classList.toggle('active')">
+                <div class="reason-image" style="background-image: url('photo2.jpg');">
+                    <div class="reason-overlay">За твою нежность и заботу, за то, как ты умеешь согревать даже в самый холодный день</div>
+                </div>
+                <div class="reason-text">Твоя нежность и забота 🌸</div>
+            </div>
+
+            <!-- Карточка 3 -->
+            <div class="reason-card" onclick="this.classList.toggle('active')">
+                <div class="reason-image" style="background-image: url('photo3.jpg');">
+                    <div class="reason-overlay">За наши общие моменты, за каждый смех и каждую беседу, которую я храню в сердце</div>
+                </div>
+                <div class="reason-text">Наши общие моменты ☕</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Секция галереи -->
+    <section class="section gallery-section fade-in">
+        <div class="section-subtitle">Наш фотоальбом</div>
+        <h2 class="section-title">Самые любимые кадры</h2>
+        
+        <div class="gallery-grid">
+            <div class="polaroid">
+                <img src="photo4.jpg" alt="Фото 1">
+            </div>
+            <div class="polaroid">
+                <img src="photo5.jpg" alt="Фото 2">
+            </div>
+            <div class="polaroid">
+                <img src="photo6.jpg" alt="Фото 3">
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // --- Логика музыкального плеера ---
+        const audio = document.getElementById('bgMusic');
+        const playIcon = document.getElementById('playIcon');
+        let isPlaying = false;
+
+        function toggleMusic() {
+            if (isPlaying) {
+                audio.pause();
+                playIcon.textContent = '▶';
+            } else {
+                audio.play().catch(e => console.log("Аудио файл не найден или заблокирован браузером"));
+                playIcon.textContent = '⏸';
+            }
+            isPlaying = !isPlaying;
+        }
+
+        // --- Анимация появления при скролле ---
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.15
+        };
+
+        const observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-in').forEach(el => {
+            observer.observe(el);
+        });
+    </script>
+</body>
+</html>
